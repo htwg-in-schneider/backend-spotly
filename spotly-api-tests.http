@@ -1,0 +1,32 @@
+### Alle Spots abrufen
+GET http://localhost:8081/api/spots
+Accept: application/json
+
+### Eigenen Spots abrufen
+GET http://localhost:8081/api/spots/mine?user=Moritz
+Accept: application/json
+
+### Neuen Spot erstellen
+POST http://localhost:8081/api/spots
+Content-Type: application/json
+
+{
+  "name": "Seerhein Park",
+  "description": "Schöner Park am Fluss",
+  "createdBy": "Moritz",
+  "location": "Seerhein"
+}
+
+### Spot aktualisieren
+PUT http://localhost:8081/api/spots/1
+Content-Type: application/json
+
+{
+  "name": "Hafen Konstanz Updated",
+  "description": "Schöner Hafen mit Restaurants und Cafés",
+  "createdBy": "Moritz",
+  "location": "Hafenstraße 1"
+}
+
+### Spot löschen
+DELETE http://localhost:8081/api/spots/1
