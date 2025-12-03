@@ -1,6 +1,10 @@
 de/spotly/backend/entity/Spot.class
-de/spotly/backend/controller/SpotController.class
-de/spotly/backend/BackendSpotlyApplication.class
 de/spotly/backend/repository/SpotRepository.class
 de/spotly/backend/config/WebConfig.class
 de/spotly/backend/config/WebConfig$1.class
+de/spotly/backend/controller/SpotController.class
+de/spotly/backend/BackendSpotlyApplication.class
+de/spotly/backend/entity/Review.class
+de/spotly/backend/dto/ReviewDTO.class
+de/spotly/backend/controller/ReviewController.class
+de/spotly/backend/repository/ReviewRepository.class

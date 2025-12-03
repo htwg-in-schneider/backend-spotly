@@ -1,7 +1,5 @@
 package de.spotly.backend.entity;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,32 +12,32 @@ public class Spot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String description;
-    private String createdBy;
-    private String location;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private String title;       // Titel
+    private String description; // Beschreibung
+    private String category;    // Kategorie
+    private String location;    // Standort
+    private String imageUrl;    // Bild-URL
 
     public Spot() {}
 
-    public Spot(String name, String description, String createdBy, String location) {
-        this.name = name;
+    public Spot(String title, String description, String category, String location, String imageUrl) {
+        this.title = title;
         this.description = description;
-        this.createdBy = createdBy;
+        this.category = category;
         this.location = location;
+        this.imageUrl = imageUrl;
     }
 
-    // Getter und Setter
+    // Getter & Setter
     public Long getId() { return id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
-    public String getCreatedBy() { return createdBy; }
-    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 }

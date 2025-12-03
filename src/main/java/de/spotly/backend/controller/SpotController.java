@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.spotly.backend.entity.Spot;
@@ -25,30 +24,33 @@ public class SpotController {
         this.spotRepository = spotRepository;
     }
 
+    // GET: alle Spots
     @GetMapping
     public List<Spot> getAllSpots() {
         return spotRepository.findAll();
     }
 
+    // POST: neuen Spot anlegen
     @PostMapping
     public Spot createSpot(@RequestBody Spot spot) {
         return spotRepository.save(spot);
     }
 
-    @GetMapping("/mine")
-    public List<Spot> getMySpots(@RequestParam String user) {
-        return spotRepository.findByCreatedBy(user);
-    }
-
+    // PUT: Spot aktualisieren
     @PutMapping("/{id}")
     public Spot updateSpot(@PathVariable Long id, @RequestBody Spot spotDetails) {
         Spot spot = spotRepository.findById(id).orElseThrow();
-        spot.setName(spotDetails.getName());
+
+        spot.setTitle(spotDetails.getTitle());
         spot.setDescription(spotDetails.getDescription());
+        spot.setCategory(spotDetails.getCategory());
         spot.setLocation(spotDetails.getLocation());
+        spot.setImageUrl(spotDetails.getImageUrl());
+
         return spotRepository.save(spot);
     }
 
+    // DELETE: Spot löschen
     @DeleteMapping("/{id}")
     public void deleteSpot(@PathVariable Long id) {
         spotRepository.deleteById(id);

@@ -17,6 +17,17 @@ Content-Type: application/json
   "location": "Seerhein"
 }
 
+### Neuen Spot erstellen
+POST http://localhost:8081/api/spots
+Content-Type: application/json
+
+{
+  "name": "Seerhein Park",
+  "description": "Schöner Park am Fluss",
+  "createdBy": "Marie",
+  "location": "Seerhein"
+}
+
 ### Spot aktualisieren
 PUT http://localhost:8081/api/spots/1
 Content-Type: application/json
@@ -30,3 +41,22 @@ Content-Type: application/json
 
 ### Spot löschen
 DELETE http://localhost:8081/api/spots/1
+
+
+
+### Alle Reviews eines Spots abrufen
+GET http://localhost:8081/api/reviews/spot/4
+Accept: application/json
+
+### Neue Review erstellen
+POST http://localhost:8081/api/reviews
+Content-Type: application/json
+
+{
+  "spotId": 4,
+  "rating": 5,
+  "comment": "Super Spot!"
+}
+
+### Review löschen
+DELETE http://localhost:8081/api/reviews/4
