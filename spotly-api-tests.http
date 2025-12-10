@@ -3,7 +3,7 @@ GET http://localhost:8081/api/spots
 Accept: application/json
 
 ### Eigenen Spots abrufen
-GET http://localhost:8081/api/spots/mine?user=Moritz
+GET http://localhost:8081/api/spots/mine?user=Marie
 Accept: application/json
 
 ### Neuen Spot erstellen
@@ -11,10 +11,10 @@ POST http://localhost:8081/api/spots
 Content-Type: application/json
 
 {
-  "name": "Seerhein Park",
+  "name": "Hafen",
   "description": "Schöner Park am Fluss",
-  "createdBy": "Moritz",
-  "location": "Seerhein"
+  "createdBy": "Efe-liz",
+  "location": "Konstanz"
 }
 
 ### Neuen Spot erstellen
@@ -22,14 +22,64 @@ POST http://localhost:8081/api/spots
 Content-Type: application/json
 
 {
-  "name": "Seerhein Park",
+  "title": "Seerhein Park",
   "description": "Schöner Park am Fluss",
-  "createdBy": "Marie",
-  "location": "Seerhein"
+  "image": "",
+  "tags": "Seerhein"
+}
+
+### Neuen Spot erstellen 
+POST http://localhost:8081/api/spots
+Content-Type: application/json
+
+{
+  "title": "Seerhein Park",
+  "description": "Schöner Park am Fluss",
+  "imageUrl": "https://example.com/bild.jpg",
+  "category": "Park",
+  "location": "Konstanz"
+}
+
+
+### Neuen Spot erstellen 
+POST http://localhost:8081/api/spots
+Content-Type: application/json
+
+{
+  "title": "Seerhein Park",
+  "description": "Schöner Park am Fluss",
+  "imageUrl": "https://example.com/bild.jpg",
+  "category": "Park",
+  "location": "Konstanz"
+}
+
+
+### Neuen Spot erstellen 
+POST http://localhost:8081/api/spots
+Content-Type: application/json
+
+{
+  "title": "Hafen",
+  "description": "Schöner Hafen mit Booten",
+  "imageUrl": "https://example.com/bild.jpg",
+  "category": "Natur und Aussicht",
+  "location": "Konstanz"
+}
+
+### Neuen Spot erstellen 
+POST http://localhost:8081/api/spots
+Content-Type: application/json
+
+{
+  "title": "Campus Festival",
+  "description": "Großes Event im Bodenseestadion mit tollen Acts.",
+  "imageUrl": "https://example.com/bild.jpg",
+  "category": "Events und Kultur",
+  "location": "Konstanz"
 }
 
 ### Spot aktualisieren
-PUT http://localhost:8081/api/spots/1
+PUT http://localhost:8081/api/spots/6
 Content-Type: application/json
 
 {
@@ -40,7 +90,7 @@ Content-Type: application/json
 }
 
 ### Spot löschen
-DELETE http://localhost:8081/api/spots/1
+DELETE http://localhost:8081/api/spots/4
 
 
 
@@ -60,3 +110,5 @@ Content-Type: application/json
 
 ### Review löschen
 DELETE http://localhost:8081/api/reviews/4
+
+mvn spring-boot:run -Dspring-boot.run.profiles=local

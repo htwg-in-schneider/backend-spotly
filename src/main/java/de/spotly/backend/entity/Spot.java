@@ -1,9 +1,15 @@
 package de.spotly.backend.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Spot {
@@ -17,6 +23,11 @@ public class Spot {
     private String category;    // Kategorie
     private String location;    // Standort
     private String imageUrl;    // Bild-URL
+
+    @OneToMany(mappedBy = "spot")
+@JsonManagedReference
+private List<Review> reviews = new ArrayList<>();
+
 
     public Spot() {}
 
@@ -40,4 +51,6 @@ public class Spot {
     public void setLocation(String location) { this.location = location; }
     public String getImageUrl() { return imageUrl; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
+    public List<Review> getReviews() {return reviews;}
+    public void setReviews(List<Review> reviews) {this.reviews = reviews;}
 }
