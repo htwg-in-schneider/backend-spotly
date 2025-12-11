@@ -17,7 +17,10 @@ public class CategoryController {
             Map.of("name", "Natur & Aussicht"),
             Map.of("name", "Shops & Märkte"),
             Map.of("name", "Events & Kultur"),
-            Map.of("name", "Cafés & Essen")
+            Map.of("name", "Cafés & Essen"),
+            Map.of("name", "Sport & Freizeit"),
+            Map.of("name", "Andere")
+
         );
     }
 }
