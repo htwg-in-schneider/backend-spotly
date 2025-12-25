@@ -1,3 +1,53 @@
+### =========================================================================
+### NUTZER-VERWALTUNG (Stammdaten Punkt b)
+### =========================================================================
+
+### 2. Neuen Administrator erstellen
+### Erstellt einen Nutzer mit Admin-Rechten und E-Mail.
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "Moritz_Admin",
+  "email": "moritz.admin@spotly.de",
+  "role": "ADMIN"
+}
+
+###
+
+### 3. Neuen Standard-Nutzer erstellen
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "username": "Max_Mustermann",
+  "email": "max@mustermann.de",
+  "role": "USER"
+}
+
+###
+
+### 4. Nutzer aktualisieren (z.B. Rolle ändern oder Sperren)
+### Ändert die Daten des Nutzers mit der ID 3.
+PUT http://localhost:8080/api/users/3
+Content-Type: application/json
+
+{
+  "username": "Efe-liz_Admin",
+  "email": "efe.liz@htwg-konstanz.de",
+  "role": "USER"
+}
+
+###
+
+### 5. Nutzer löschen
+### Testet die Lösch-Funktion deines Dashboards.
+DELETE http://localhost:8080/api/users/7
+Accept: application/json
+
+### =========================================================================
+### SPOTS-VERWALTUNG (Stammdaten Punkt b)
+### =========================================================================
 ### Alle Spots abrufen
 GET http://localhost:8081/api/spots
 Accept: application/json
@@ -7,7 +57,7 @@ GET http://localhost:8081/api/spots/mine?user=Marie
 Accept: application/json
 
 ### Neuen Spot erstellen
-POST http://localhost:8081/api/spots
+POST http://localhost:8080/api/spots
 Content-Type: application/json
 
 {
@@ -18,7 +68,7 @@ Content-Type: application/json
 }
 
 ### Neuen Spot erstellen
-POST http://localhost:8081/api/spots
+POST http://localhost:8080/api/spots
 Content-Type: application/json
 
 {
@@ -55,7 +105,7 @@ Content-Type: application/json
 
 
 ### Neuen Spot erstellen 
-POST http://localhost:8081/api/spots
+POST http://localhost:8080/api/spots
 Content-Type: application/json
 
 {
@@ -67,7 +117,7 @@ Content-Type: application/json
 }
 
 ### Neuen Spot erstellen 
-POST http://localhost:8081/api/spots
+POST http://localhost:8080/api/spots
 Content-Type: application/json
 
 {
@@ -110,6 +160,7 @@ Content-Type: application/json
 
 ### Review löschen
 DELETE http://localhost:8081/api/reviews/4
+
 
 mvn spring-boot:run -Dspring-boot.run.profiles=local
 

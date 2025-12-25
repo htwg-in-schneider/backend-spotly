@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,13 +52,13 @@ public class SpotController {
     }
 
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createSpot(@RequestBody Spot spot) {
+    public ResponseEntity<Map<String, Object>> createSpot(@Valid @RequestBody Spot spot) {
         Spot saved = spotService.save(spot);
         return ResponseEntity.status(201).body(mapToFrontend(saved));
     }
 
     @PutMapping("/{id}")
-    public Map<String, Object> updateSpot(@PathVariable Long id, @RequestBody Spot spotDetails) {
+    public Map<String, Object> updateSpot(@PathVariable Long id,@Valid @RequestBody Spot spotDetails) {
         Spot saved = spotService.update(id, spotDetails);
         return mapToFrontend(saved);
     }
