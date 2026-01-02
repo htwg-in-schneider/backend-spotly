@@ -1,8 +1,6 @@
 package de.spotly.backend.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "app_user")
@@ -13,14 +11,10 @@ public class User {
     private Long id;
 
     private String oauthId;
-    @NotBlank(message = "Nutzername darf nicht leer sein")
     private String username;
 
-    @Email(message = "Ungültiges E-Mail-Format")
-    @NotBlank(message = "E-Mail darf nicht leer sein")
     private String email; // Neues Feld für die E-Mail
 
-    @NotBlank(message = "Rolle darf nicht leer sein")
     private String role;
 
     public User() {}

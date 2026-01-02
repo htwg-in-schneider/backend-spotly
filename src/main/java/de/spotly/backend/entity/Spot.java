@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+
 
 @Entity
 public class Spot {
@@ -14,17 +13,12 @@ public class Spot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Titel darf nicht leer sein")
-    @Size(min = 2, max = 100, message = "Titel muss zwischen 2 und 100 Zeichen lang sein")
     private String title;
 
-    @NotBlank(message = "Beschreibung darf nicht leer sein")
     private String description;
 
-    @NotBlank(message = "Kategorie darf nicht leer sein")
     private String category;
 
-    @NotBlank(message = "Standort darf nicht leer sein")
     private String location;
 
     private String imageUrl; // Bild-URL ist oft optional, daher kein @NotBlank
