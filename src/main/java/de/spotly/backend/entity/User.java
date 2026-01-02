@@ -12,6 +12,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String oauthId;
     @NotBlank(message = "Nutzername darf nicht leer sein")
     private String username;
 
@@ -24,13 +25,18 @@ public class User {
 
     public User() {}
 
-    public User(String username, String email, String role) {
+    public User(String username, String email, String role, String oauthId) {
         this.username = username;
         this.email = email;
         this.role = role;
+        this.oauthId = oauthId;
     }
 
     // Getter und Setter
+
+    public String getOauthId() { return oauthId; }
+    public void setOauthId(String oauthId) { this.oauthId = oauthId; }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

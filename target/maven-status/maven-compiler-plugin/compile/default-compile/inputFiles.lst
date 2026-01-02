@@ -1,6 +1,8 @@
 /Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/BackendSpotlyApplication.java
+/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/config/SecurityConfig.java
 /Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/config/WebConfig.java
 /Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/CategoryController.java
+/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/ProfileController.java
 /Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/ReviewController.java
 /Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/SpotController.java
 /Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/UserController.java
