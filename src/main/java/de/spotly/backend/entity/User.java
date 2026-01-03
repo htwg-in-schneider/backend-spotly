@@ -9,12 +9,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String oauthId;
     private String username;
-
     private String email; // Neues Feld für die E-Mail
-
     private String role;
 
     public User() {}
