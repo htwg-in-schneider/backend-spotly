@@ -21,7 +21,11 @@ public class Spot {
 
     private String location;
 
-    private String imageUrl; // Bild-URL ist oft optional, daher kein @NotBlank
+    private String imageUrl;// Bild-URL ist oft optional, daher kein @NotBlank
+
+    private Double latitude;
+
+    private Double longitude;
 
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -31,12 +35,15 @@ public class Spot {
     public Spot() {}
 
     // Konstruktor für einfaches Anlegen
-    public Spot(String title, String description, String category, String location, String imageUrl) {
+    public Spot(String title, String description, String category, String location, String imageUrl, double latitude, double longitude) {
         this.title = title;
         this.description = description;
         this.category = category;
         this.location = location;
         this.imageUrl = imageUrl;
+        this.latitude = latitude;
+        this.longitude = longitude;
+
     }
 
     // --- Getter & Setter ---
@@ -95,5 +102,21 @@ public class Spot {
 
     public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }
