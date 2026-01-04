@@ -15,17 +15,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Deaktiviert für zustandslose APIs
-                .cors(Customizer.withDefaults()) // WICHTIG: Nutzt deine WebConfig!
+                .csrf(csrf -> csrf.disable())
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
-                        // Besucher dürfen Spots und Kategorien anschauen (Folie 33)
+                        // Öffentlich zugängliche Pfade
                         .requestMatchers(HttpMethod.GET, "/api/spots/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/category/**").permitAll()
 
-                        // Alles andere (Posten, Profil abrufen, Löschen) erfordert Login
+                        // NEU: Reviews für alle sichtbar machen
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+
+                        // Alles andere (POST /api/reviews, POST /api/spots, etc.) erfordert Login
                         .anyRequest().authenticated()
                 )
-                // Konfiguriert das Backend als Resource Server für Auth0 Tokens (Folie 32)
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
         return http.build();
