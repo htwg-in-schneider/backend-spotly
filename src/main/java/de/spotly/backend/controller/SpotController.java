@@ -6,21 +6,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired; // Neu
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired; // Neu
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+// NEUE IMPORTS FÜR AUTH0
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
+
 import de.spotly.backend.entity.Spot;
 import de.spotly.backend.service.SpotService;
-import de.spotly.backend.service.GeocodingService; // Neu
+import de.spotly.backend.service.GeocodingService;
 
 @RestController
 @RequestMapping("/api/spots")
@@ -28,13 +24,14 @@ public class SpotController {
 
     private final SpotService spotService;
 
-    @Autowired // Neu: Service für die Koordinaten-Berechnung
+    @Autowired
     private GeocodingService geocodingService;
 
     public SpotController(SpotService spotService) {
         this.spotService = spotService;
     }
 
+    // 1. ÖFFENTLICH: Alle Spots laden (keine Änderung nötig)
     @GetMapping
     public List<Map<String, Object>> getAllSpots(
             @RequestParam(required = false) String title,
@@ -46,6 +43,22 @@ public class SpotController {
                 .collect(Collectors.toList());
     }
 
+    // 2. PRIVAT: Nur "Meine Spots" (Nutzt das Token)
+    @GetMapping("/me")
+    public List<Map<String, Object>> getMySpots(@AuthenticationPrincipal Jwt jwt) {
+        if (jwt == null) {
+            throw new RuntimeException("Nicht autorisiert: Kein Token gefunden.");
+        }
+        // Holt die Auth0 User-ID (sub) aus dem Token
+        String userId = jwt.getSubject();
+
+        List<Spot> spots = spotService.findByOwnerId(userId);
+        return spots.stream()
+                .map(this::mapToFrontend)
+                .collect(Collectors.toList());
+    }
+
+    // 3. ÖFFENTLICH: Einzelnen Spot laden (keine Änderung nötig)
     @GetMapping("/{id}")
     public Map<String, Object> getSpotById(@PathVariable Long id) {
         Spot spot = spotService.findById(id)
@@ -53,9 +66,17 @@ public class SpotController {
         return mapToFrontend(spot);
     }
 
+    // 4. PRIVAT: Spot erstellen (Speichert jetzt die ownerId automatisch)
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createSpot(@Valid @RequestBody Spot spot) {
-        // AUTOMATIK: Wenn das Frontend keine Koordinaten sendet, Adresse umwandeln
+    public ResponseEntity<Map<String, Object>> createSpot(
+            @Valid @RequestBody Spot spot,
+            @AuthenticationPrincipal Jwt jwt) { // JWT hinzugefügt
+
+        // Automatik: Setzt die ownerId aus dem Auth0 Token
+        if (jwt != null) {
+            spot.setOwnerId(jwt.getSubject());
+        }
+
         if (spot.getLatitude() == null || spot.getLongitude() == null) {
             double[] coords = geocodingService.getCoordinates(spot.getLocation());
             if (coords != null) {
@@ -70,7 +91,6 @@ public class SpotController {
 
     @PutMapping("/{id}")
     public Map<String, Object> updateSpot(@PathVariable Long id, @Valid @RequestBody Spot spotDetails) {
-        // Auch beim Update prüfen, ob sich die Adresse geändert hat und Koordinaten neu berechnen
         double[] coords = geocodingService.getCoordinates(spotDetails.getLocation());
         if (coords != null) {
             spotDetails.setLatitude(coords[0]);
@@ -87,6 +107,7 @@ public class SpotController {
         return ResponseEntity.noContent().build();
     }
 
+    // HILFSMETHODE: Mappt das Datenbank-Objekt für das Frontend
     private Map<String, Object> mapToFrontend(Spot s) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", s.getId());
@@ -94,10 +115,11 @@ public class SpotController {
         map.put("description", s.getDescription());
         map.put("imageUrl", s.getImageUrl());
         map.put("location", s.getLocation());
-
-        // WICHTIG: Koordinaten für die Karte ans Frontend mitschicken
         map.put("latitude", s.getLatitude());
         map.put("longitude", s.getLongitude());
+
+        // WICHTIG: Damit das Frontend weiß, wem der Spot gehört
+        map.put("ownerId", s.getOwnerId());
 
         List<Map<String, Object>> reviewMaps = s.getReviews().stream()
                 .map(r -> {

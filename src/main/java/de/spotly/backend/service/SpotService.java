@@ -60,4 +60,10 @@ public class SpotService {
         }
         spotRepository.deleteById(id);
     }
+    // de.spotly.backend.service.SpotService
+
+    public List<Spot> findByOwnerId(String ownerId) {
+        // Ruft die neue Repository-Methode auf, die wir im letzten Schritt erstellt haben
+        return spotRepository.findByOwnerId(ownerId);
+    }
 }

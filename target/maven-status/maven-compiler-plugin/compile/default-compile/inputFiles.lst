@@ -1,18 +1,18 @@
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/BackendSpotlyApplication.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/config/SecurityConfig.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/config/WebConfig.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/CategoryController.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/ProfileController.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/ReviewController.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/SpotController.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/controller/UserController.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/dto/ReviewDTO.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/entity/Category.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/entity/Review.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/entity/Spot.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/entity/User.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/repository/ReviewRepository.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/repository/SpotRepository.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/repository/UserRepository.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/service/GeocodingService.java
-/Users/moritzbader/Documents/Studium WIN/Semester 04/Web-Technologien/backend-spotly/src/main/java/de/spotly/backend/service/SpotService.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\BackendSpotlyApplication.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\config\SecurityConfig.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\config\WebConfig.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\controller\CategoryController.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\controller\ProfileController.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\controller\ReviewController.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\controller\SpotController.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\controller\UserController.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\dto\ReviewDTO.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\entity\Category.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\entity\Review.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\entity\Spot.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\entity\User.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\repository\ReviewRepository.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\repository\SpotRepository.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\repository\UserRepository.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\service\GeocodingService.java
+C:\Users\efeli\OneDrive\Desktop\Studium\Semester04\Webtechnologien\backend-spotly\src\main\java\de\spotly\backend\service\SpotService.java

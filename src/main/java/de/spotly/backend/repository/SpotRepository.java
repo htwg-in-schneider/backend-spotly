@@ -13,6 +13,6 @@ public interface SpotRepository extends JpaRepository<Spot, Long> {
     List<Spot> findByCategoryIgnoreCase(String category);
 
     List<Spot> findByTitleContainingIgnoreCaseAndCategoryIgnoreCase(String title, String category);
-
-
+    // NEU: Diese Methode holt nur die Spots eines bestimmten Users
+    List<Spot> findByOwnerId(String ownerId);
 }

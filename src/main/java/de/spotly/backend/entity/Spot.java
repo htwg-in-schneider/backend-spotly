@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
-
 @Entity
 public class Spot {
 
@@ -14,18 +13,16 @@ public class Spot {
     private Long id;
 
     private String title;
-
     private String description;
-
     private String category;
-
     private String location;
-
-    private String imageUrl;// Bild-URL ist oft optional, daher kein @NotBlank
-
+    private String imageUrl;
     private Double latitude;
-
     private Double longitude;
+
+    // NEU: Die ID des Erstellers (Auth0-User-ID)
+    // Wir speichern sie als String, da Auth0 IDs wie "auth0|123..." verwendet
+    private String ownerId;
 
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -34,7 +31,7 @@ public class Spot {
     // Standard-Konstruktor (wichtig für JPA)
     public Spot() {}
 
-    // Konstruktor für einfaches Anlegen
+    // Angepasster Konstruktor (Behalte den alten bei und füge ownerId hinzu, falls gewünscht)
     public Spot(String title, String description, String category, String location, String imageUrl, double latitude, double longitude) {
         this.title = title;
         this.description = description;
@@ -43,80 +40,45 @@ public class Spot {
         this.imageUrl = imageUrl;
         this.latitude = latitude;
         this.longitude = longitude;
-
     }
 
     // --- Getter & Setter ---
 
-    public Long getId() {
-        return id;
+    // NEU: Getter und Setter für ownerId
+    public String getOwnerId() {
+        return ownerId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    // --- Bestehende Getter & Setter (unverändert) ---
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public String getCategory() {
-        return category;
-    }
+    public String getCategory() { return category; }
+    public void setCategory(String category) { this.category = category; }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
 
-    public String getLocation() {
-        return location;
-    }
+    public String getImageUrl() { return imageUrl; }
+    public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
+    public List<Review> getReviews() { return reviews; }
+    public void setReviews(List<Review> reviews) { this.reviews = reviews; }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
 }
