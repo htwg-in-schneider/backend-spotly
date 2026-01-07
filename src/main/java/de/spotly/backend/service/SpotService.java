@@ -50,6 +50,8 @@ public class SpotService {
         spot.setCategory(spotDetails.getCategory());
         spot.setLocation(spotDetails.getLocation());
         spot.setImageUrl(spotDetails.getImageUrl());
+        spot.setLatitude(spotDetails.getLatitude());
+        spot.setLongitude(spotDetails.getLongitude());
 
         return spotRepository.save(spot);
     }
@@ -60,7 +62,6 @@ public class SpotService {
         }
         spotRepository.deleteById(id);
     }
-    // de.spotly.backend.service.SpotService
 
     public List<Spot> findByOwnerId(String ownerId) {
         // Ruft die neue Repository-Methode auf, die wir im letzten Schritt erstellt haben

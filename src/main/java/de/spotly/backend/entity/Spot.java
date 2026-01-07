@@ -1,9 +1,11 @@
 package de.spotly.backend.entity;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Spot {
@@ -12,6 +14,10 @@ public class Spot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
     private String title;
     private String description;
     private String category;
@@ -19,9 +25,6 @@ public class Spot {
     private String imageUrl;
     private Double latitude;
     private Double longitude;
-
-    // NEU: Die ID des Erstellers (Auth0-User-ID)
-    // Wir speichern sie als String, da Auth0 IDs wie "auth0|123..." verwendet
     private String ownerId;
 
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,9 +45,10 @@ public class Spot {
         this.longitude = longitude;
     }
 
-    // --- Getter & Setter ---
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
 
-    // NEU: Getter und Setter für ownerId
     public String getOwnerId() {
         return ownerId;
     }
@@ -52,8 +56,6 @@ public class Spot {
     public void setOwnerId(String ownerId) {
         this.ownerId = ownerId;
     }
-
-    // --- Bestehende Getter & Setter (unverändert) ---
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

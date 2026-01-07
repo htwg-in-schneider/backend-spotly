@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import de.spotly.backend.entity.User;
+import de.spotly.backend.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ public class SpotController {
 
     @Autowired
     private GeocodingService geocodingService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public SpotController(SpotService spotService) {
         this.spotService = spotService;
@@ -117,6 +122,8 @@ public class SpotController {
         map.put("location", s.getLocation());
         map.put("latitude", s.getLatitude());
         map.put("longitude", s.getLongitude());
+        map.put("createdAt", s.getCreatedAt());
+
 
         // WICHTIG: Damit das Frontend weiß, wem der Spot gehört
         map.put("ownerId", s.getOwnerId());
@@ -135,6 +142,16 @@ public class SpotController {
         Map<String, String> category = new HashMap<>();
         category.put("name", s.getCategory());
         map.put("category", category);
+
+        String creatorName = "Unbekannter User";
+        if (s.getOwnerId() != null) {
+            // Wir suchen in der User-Tabelle nach der oauthId, die im Spot als ownerId gespeichert ist
+            creatorName = userRepository.findByOauthId(s.getOwnerId())
+                    .map(User::getUsername)
+                    .orElse("Anonymer Local");
+        }
+        map.put("authorName", creatorName);
+
 
         return map;
     }

@@ -22,7 +22,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/spots/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/category/**").permitAll()
 
-                        // NEU: Reviews für alle sichtbar machen
+                        // Reviews für alle sichtbar machen
                         .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
 
                         // Alles andere (POST /api/reviews, POST /api/spots, etc.) erfordert Login
