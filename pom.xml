@@ -14,9 +14,9 @@
     </parent>
 
     <groupId>de.spotly</groupId>
-    <artifactId>spotly-backend</artifactId>
+    <artifactId>backend-spotly</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>spotly-backend</name>
+    <name>backend-spotly</name>
     <description>Backend für Spotly Webapplikation</description>
 
     <properties>
