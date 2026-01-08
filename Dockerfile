@@ -8,7 +8,7 @@ RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/spotly-backend-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
