@@ -13,6 +13,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -21,7 +22,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 1. Session-Management auf STATELESS stellen (WICHTIG für APIs)
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
@@ -29,18 +29,13 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
 
                 .authorizeHttpRequests(auth -> auth
-                        // 2. Explizit OPTIONS erlauben (Preflight)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                        // 3. Deine Pfade ohne Sternchen und mit Sternchen freigeben
                         .requestMatchers(HttpMethod.GET, "/api/category", "/api/category/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/spots", "/api/spots/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/reviews", "/api/reviews/**").permitAll()
 
-                        // Alles andere braucht Auth
                         .anyRequest().authenticated()
                 )
-                // 4. OAuth2 Ressourcen Server konfigurieren
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
         return http.build();
@@ -50,9 +45,8 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList(
-                "http://localhost:5173",
-                "https://backend-spotly.onrender.com"
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type", "Origin", "Accept"));
