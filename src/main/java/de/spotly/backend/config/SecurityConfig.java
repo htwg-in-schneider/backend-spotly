@@ -35,8 +35,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/reviews", "/api/reviews/**").permitAll()
 
                         .anyRequest().authenticated()
-                );
-               // .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
         return http.build();
     }
