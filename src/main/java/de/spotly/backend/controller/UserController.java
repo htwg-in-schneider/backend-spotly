@@ -4,9 +4,12 @@ import de.spotly.backend.entity.User;
 import de.spotly.backend.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -41,6 +44,22 @@ public class UserController {
             user.setRole(userDetails.getRole());
             User updatedUser = userRepository.save(user);
             return ResponseEntity.ok(updatedUser);
+        }).orElse(ResponseEntity.notFound().build());
+    }
+    @PutMapping("/me") // Die URL ist dann /api/users/me (oder /api/profile/me)
+    public ResponseEntity<User> updateMyProfile(
+            @AuthenticationPrincipal Jwt jwt,
+            @RequestBody Map<String, String> updates) {
+
+        // 1. Auth0-ID aus dem Token holen
+        String oauthId = jwt.getSubject();
+        String newUsername = updates.get("username");
+
+        // 2. User in der DB anhand der oauthId suchen
+        return userRepository.findByOauthId(oauthId).map(user -> {
+            user.setUsername(newUsername);
+            User savedUser = userRepository.save(user);
+            return ResponseEntity.ok(savedUser);
         }).orElse(ResponseEntity.notFound().build());
     }
 
