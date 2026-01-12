@@ -26,6 +26,8 @@ public class Spot {
     private Double latitude;
     private Double longitude;
     private String ownerId;
+    private Double averageRating = 0.0;
+    private Integer reviewCount = 0;
 
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
@@ -83,4 +85,9 @@ public class Spot {
 
     public Double getLongitude() { return longitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
+
+    public Double getAverageRating() { return averageRating; }
+    public void setAverageRating(Double averageRating) { this.averageRating = averageRating; }
+    public Integer getReviewCount() { return reviewCount; }
+    public void setReviewCount(Integer reviewCount) { this.reviewCount = reviewCount; }
 }

@@ -5,8 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import de.spotly.backend.entity.Review;
 import de.spotly.backend.entity.User;
 import de.spotly.backend.repository.UserRepository;
+import de.spotly.backend.service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -104,6 +106,19 @@ public class SpotController {
         return ResponseEntity.status(201).body(mapToFrontend(saved));
     }
 
+    @Autowired
+    private de.spotly.backend.service.ReviewService reviewService;
+
+    @PostMapping("/{id}/reviews")
+    public ResponseEntity<?> addReview(@PathVariable Long id, @RequestBody Review review) {
+        try {
+            Review saved = reviewService.addReviewAndUpdateSpot(id, review);
+            return ResponseEntity.status(201).body(saved);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @PutMapping("/{id}")
     public Map<String, Object> updateSpot(@PathVariable Long id, @Valid @RequestBody Spot spotDetails) {
         double[] coords = geocodingService.getCoordinates(spotDetails.getLocation());
@@ -133,6 +148,8 @@ public class SpotController {
         map.put("latitude", s.getLatitude());
         map.put("longitude", s.getLongitude());
         map.put("createdAt", s.getCreatedAt());
+        map.put("averageRating", s.getAverageRating());
+        map.put("reviewCount", s.getReviewCount());
 
 
         // WICHTIG: Damit das Frontend weiß, wem der Spot gehört
