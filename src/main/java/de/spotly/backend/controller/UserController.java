@@ -42,8 +42,8 @@ public class UserController {
         return userRepository.findById(id).map(user -> {
             user.setUsername(userDetails.getUsername());
             user.setRole(userDetails.getRole());
-            User updatedUser = userRepository.save(user);
             user.setEnabled(userDetails.isEnabled());
+            User updatedUser = userRepository.save(user);
             return ResponseEntity.ok(updatedUser);
         }).orElse(ResponseEntity.notFound().build());
     }
