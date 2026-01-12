@@ -19,8 +19,6 @@ public class ReviewService {
         this.spotRepository = spotRepository;
     }
 
-    @Autowired
-    private de.spotly.backend.service.ReviewService reviewService;
 
     @Transactional
     public Review addReviewAndUpdateSpot(Long spotId, Review newReview) {
