@@ -13,6 +13,7 @@ public class User {
     private String username;
     private String email; // Neues Feld für die E-Mail
     private String role;
+    private boolean enabled = true;
 
     public User() {}
 
@@ -39,4 +40,6 @@ public class User {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+    public boolean isEnabled() { return enabled; }
+    public void setEnabled(boolean enabled) { this.enabled = enabled; }
 }

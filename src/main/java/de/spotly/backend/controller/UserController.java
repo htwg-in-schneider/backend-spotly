@@ -43,6 +43,7 @@ public class UserController {
             user.setUsername(userDetails.getUsername());
             user.setRole(userDetails.getRole());
             User updatedUser = userRepository.save(user);
+            user.setEnabled(userDetails.isEnabled());
             return ResponseEntity.ok(updatedUser);
         }).orElse(ResponseEntity.notFound().build());
     }

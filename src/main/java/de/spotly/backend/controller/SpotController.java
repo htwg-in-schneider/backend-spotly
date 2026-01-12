@@ -73,13 +73,23 @@ public class SpotController {
 
     // 4. PRIVAT: Spot erstellen (Speichert jetzt die ownerId automatisch)
     @PostMapping
-    public ResponseEntity<Map<String, Object>> createSpot(
+    public ResponseEntity<?> createSpot(
             @Valid @RequestBody Spot spot,
             @AuthenticationPrincipal Jwt jwt) { // JWT hinzugefügt
 
         // Automatik: Setzt die ownerId aus dem Auth0 Token
         if (jwt != null) {
             spot.setOwnerId(jwt.getSubject());
+        }
+
+        String subjectId = jwt.getSubject();
+
+        boolean isBlocked = userRepository.findByOauthId(subjectId)
+                .map(user -> !user.isEnabled())
+                .orElse(false);
+
+        if (isBlocked) {
+            return ResponseEntity.status(403).body("Ihr Account wurde gesperrt.");
         }
 
         if (spot.getLatitude() == null || spot.getLongitude() == null) {
