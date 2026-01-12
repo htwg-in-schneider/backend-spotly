@@ -37,7 +37,7 @@ public class Spot {
     public Spot() {}
 
     // Angepasster Konstruktor (Behalte den alten bei und füge ownerId hinzu, falls gewünscht)
-    public Spot(String title, String description, String category, String location, String imageUrl, double latitude, double longitude) {
+    public Spot(String title, String description, String category, String location, String imageUrl, double latitude, double longitude, String ownerID, Double averageRating, Integer reviewCount) {
         this.title = title;
         this.description = description;
         this.category = category;
@@ -45,6 +45,9 @@ public class Spot {
         this.imageUrl = imageUrl;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.ownerId = ownerID;
+        this.averageRating = averageRating;
+        this.reviewCount = reviewCount;
     }
 
     public LocalDateTime getCreatedAt() {
