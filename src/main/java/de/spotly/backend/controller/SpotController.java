@@ -102,6 +102,10 @@ public class SpotController {
             }
         }
 
+        spot.setAverageRating(0.0);
+        spot.setReviewCount(0);
+
+
         Spot saved = spotService.save(spot);
         return ResponseEntity.status(201).body(mapToFrontend(saved));
     }
@@ -148,8 +152,8 @@ public class SpotController {
         map.put("latitude", s.getLatitude());
         map.put("longitude", s.getLongitude());
         map.put("createdAt", s.getCreatedAt());
-        map.put("averageRating", s.getAverageRating());
-        map.put("reviewCount", s.getReviewCount());
+        map.put("averageRating", s.getAverageRating() != null ? s.getAverageRating() : 0.0);
+        map.put("reviewCount", s.getReviewCount() != null ? s.getReviewCount() : 0);
 
 
         // WICHTIG: Damit das Frontend weiß, wem der Spot gehört
