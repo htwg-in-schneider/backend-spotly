@@ -12,9 +12,11 @@ import de.spotly.backend.repository.SpotRepository;
 public class SpotService {
 
     private final SpotRepository spotRepository;
+    private final AdminLogService adminLogService; // HINZUGEFÜGT
 
-    public SpotService(SpotRepository spotRepository) {
+    public SpotService(SpotRepository spotRepository, AdminLogService adminLogService) { // BEARBEITET
         this.spotRepository = spotRepository;
+        this.adminLogService = adminLogService; // HINZUGEFÜGT
     }
 
     public List<Spot> findSpotsByCriteria(String title, String category) {
@@ -38,8 +40,9 @@ public class SpotService {
     }
 
     public Spot save(Spot spot) {
-
-        return spotRepository.save(spot);
+        Spot savedSpot = spotRepository.save(spot);
+        adminLogService.log("SYSTEM", "SPOT_CREATED", "Spot '" + savedSpot.getTitle() + "' wurde erstellt."); // HINZUGEFÜGT
+        return savedSpot;
     }
 
     public Spot update(Long id, Spot spotDetails) {
@@ -53,7 +56,9 @@ public class SpotService {
         spot.setLatitude(spotDetails.getLatitude());
         spot.setLongitude(spotDetails.getLongitude());
 
-        return spotRepository.save(spot);
+        Spot updatedSpot = spotRepository.save(spot);
+        adminLogService.log("SYSTEM", "SPOT_UPDATED", "Spot ID " + id + " wurde aktualisiert."); // HINZUGEFÜGT
+        return updatedSpot;
     }
 
     public void delete(Long id) {
@@ -61,10 +66,10 @@ public class SpotService {
             throw new RuntimeException("Spot nicht gefunden: " + id);
         }
         spotRepository.deleteById(id);
+        adminLogService.log("SYSTEM", "SPOT_DELETED", "Spot ID " + id + " wurde gelöscht."); // HINZUGEFÜGT
     }
 
     public List<Spot> findByOwnerId(String ownerId) {
-        // Ruft die neue Repository-Methode auf, die wir im letzten Schritt erstellt haben
         return spotRepository.findByOwnerId(ownerId);
     }
 }

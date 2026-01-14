@@ -14,10 +14,12 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
     private final SpotRepository spotRepository;
+    private final AdminLogService adminLogService;
 
-    public ReviewService(ReviewRepository reviewRepository, SpotRepository spotRepository) {
+    public ReviewService(ReviewRepository reviewRepository, SpotRepository spotRepository, AdminLogService adminLogService) {
         this.reviewRepository = reviewRepository;
         this.spotRepository = spotRepository;
+        this.adminLogService = adminLogService;
     }
 
     @Transactional
@@ -32,11 +34,14 @@ public class ReviewService {
                 * (spot.getReviewCount() != null ? spot.getReviewCount() : 0);
 
         int newCount = (spot.getReviewCount() != null ? spot.getReviewCount() : 0) + 1;
+        // WIEDER AUF getRating() GEÄNDERT:
         double newAverage = (currentTotal + newReview.getRating()) / newCount;
 
         spot.setReviewCount(newCount);
         spot.setAverageRating(newAverage);
         spotRepository.save(spot);
+
+        adminLogService.log("SYSTEM", "REVIEW_ADDED", "Neue Bewertung für Spot '" + spot.getTitle() + "'");
 
         return savedReview;
     }
@@ -50,6 +55,7 @@ public class ReviewService {
         reviewRepository.delete(review);
 
         recalculateSpotStatistics(spot);
+        adminLogService.log("SYSTEM", "REVIEW_DELETED", "Bewertung ID " + reviewId + " wurde gelöscht.");
     }
 
     private void recalculateSpotStatistics(Spot spot) {
@@ -57,6 +63,7 @@ public class ReviewService {
 
         int count = reviews.size();
         double average = reviews.stream()
+                // WIEDER AUF getRating() GEÄNDERT:
                 .mapToDouble(Review::getRating)
                 .average()
                 .orElse(0.0);
