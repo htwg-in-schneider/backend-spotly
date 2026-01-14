@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+// Kümmert sich um die Profil-Daten des aktuell eingeloggten Nutzers
 @RestController
 @RequestMapping("/api/profile")
 public class ProfileController {
@@ -19,15 +20,18 @@ public class ProfileController {
         this.userRepository = userRepository;
     }
 
+    // Holt das Profil passend zum Login-Token ab
     @GetMapping
     public ResponseEntity<User> getMyProfile(@AuthenticationPrincipal Jwt jwt) {
-        String oauthId = jwt.getSubject(); // Holt die 'sub' ID aus dem Token
+        // Die 'sub' ID ist die eindeutige Kennung von Auth0
+        String oauthId = jwt.getSubject();
 
+        // Sucht den User in unserer Datenbank; falls er neu ist, wird er automatisch angelegt
         User user = userRepository.findByOauthId(oauthId)
                 .orElseGet(() -> {
                     User newUser = new User();
                     newUser.setOauthId(oauthId);
-                    newUser.setRole("USER"); // Standardrolle
+                    newUser.setRole("USER"); // Jeder neue Nutzer startet als normaler User
                     return userRepository.save(newUser);
                 });
 

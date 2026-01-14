@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+// Diese Klasse definiert, wie ein "Spot" (ein Ort) in der Datenbank gespeichert wird
 @Entity
 public class Spot {
 
@@ -15,28 +16,31 @@ public class Spot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @CreationTimestamp
+    @CreationTimestamp // Speichert automatisch das Datum, an dem der Spot erstellt wurde
     @Column(updatable = false)
     private LocalDateTime createdAt;
 
     private String title;
     private String description;
     private String category;
-    private String location;
+    private String location; // Textuelle Adresse
     private String imageUrl;
-    private Double latitude;
-    private Double longitude;
-    private String ownerId;
-    private Double averageRating = 0.0;
-    private Integer reviewCount = 0;
+    private Double latitude; // Breitengrad für die Karte
+    private Double longitude; // Längengrad für die Karte
+    private String ownerId; // Die ID des Users, dem dieser Spot gehört (von Auth0)
+    private Double averageRating = 0.0; // Durchschnitt der Sterne
+    private Integer reviewCount = 0; // Anzahl der Bewertungen insgesamt
 
+    // Verbindung zu den Bewertungen: Ein Spot kann viele Reviews haben (One-to-Many)
+    // Wenn ein Spot gelöscht wird, werden alle seine Reviews mitgelöscht (CascadeType.ALL)
     @OneToMany(mappedBy = "spot", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference // Sorgt dafür, dass die Bewertungen im JSON mit ausgegeben werden
     private List<Review> reviews = new ArrayList<>();
 
     public Spot() {
     }
 
+    // Konstruktor zum schnellen Erstellen eines neuen Objekts
     public Spot(String title, String description, String category, String location, String imageUrl, double latitude, double longitude, String ownerID, Double averageRating, Integer reviewCount) {
         this.title = title;
         this.description = description;
@@ -50,6 +54,7 @@ public class Spot {
         this.reviewCount = reviewCount;
     }
 
+    // Getter und Setter, damit das System die Daten lesen und bearbeiten kann
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }

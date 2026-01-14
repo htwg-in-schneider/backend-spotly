@@ -20,6 +20,7 @@ import de.spotly.backend.entity.Spot;
 import de.spotly.backend.service.SpotService;
 import de.spotly.backend.service.GeocodingService;
 
+// Das hier ist die Haupt-Schnittstelle für alles, was mit den Spots zu tun hat
 @RestController
 @RequestMapping("/api/spots")
 public class SpotController {
@@ -36,6 +37,7 @@ public class SpotController {
         this.spotService = spotService;
     }
 
+    // Liefert alle Spots zurück, wahlweise gefiltert nach Titel oder Kategorie
     @GetMapping
     public List<Map<String, Object>> getAllSpots(
             @RequestParam(required = false) String title,
@@ -47,6 +49,7 @@ public class SpotController {
                 .collect(Collectors.toList());
     }
 
+    // Zeigt nur die Spots an, die der aktuell eingeloggte Nutzer selbst erstellt hat
     @GetMapping("/me")
     public List<Map<String, Object>> getMySpots(@AuthenticationPrincipal Jwt jwt) {
         if (jwt == null) {
@@ -60,6 +63,7 @@ public class SpotController {
                 .collect(Collectors.toList());
     }
 
+    // Details zu einem ganz bestimmten Spot über die ID abrufen
     @GetMapping("/{id}")
     public Map<String, Object> getSpotById(@PathVariable Long id) {
         Spot spot = spotService.findById(id)
@@ -67,10 +71,11 @@ public class SpotController {
         return mapToFrontend(spot);
     }
 
+    // Erstellt einen neuen Spot und prüft vorher, ob der User gesperrt ist
     @PostMapping
     public ResponseEntity<?> createSpot(
             @Valid @RequestBody Spot spot,
-            @AuthenticationPrincipal Jwt jwt) { // JWT hinzugefügt
+            @AuthenticationPrincipal Jwt jwt) {
 
         if (jwt != null) {
             spot.setOwnerId(jwt.getSubject());
@@ -78,6 +83,7 @@ public class SpotController {
 
         String subjectId = jwt.getSubject();
 
+        // Check, ob der User überhaupt Spots erstellen darf (enabled-Flag)
         boolean isBlocked = userRepository.findByOauthId(subjectId)
                 .map(user -> !user.isEnabled())
                 .orElse(false);
@@ -86,6 +92,7 @@ public class SpotController {
             return ResponseEntity.status(403).body("Ihr Account wurde gesperrt.");
         }
 
+        // Falls keine Koordinaten mitgeschickt wurden, suchen wir sie automatisch über die Adresse
         if (spot.getLatitude() == null || spot.getLongitude() == null) {
             double[] coords = geocodingService.getCoordinates(spot.getLocation());
             if (coords != null) {
@@ -105,6 +112,7 @@ public class SpotController {
     @Autowired
     private de.spotly.backend.service.ReviewService reviewService;
 
+    // Fügt einem Spot eine neue Bewertung hinzu und aktualisiert die Sterne
     @PostMapping("/{id}/reviews")
     public ResponseEntity<?> addReview(@PathVariable Long id, @RequestBody Review review) {
         try {
@@ -115,6 +123,7 @@ public class SpotController {
         }
     }
 
+    // Aktualisiert die Daten eines Spots (z.B. neue Beschreibung oder Ort)
     @PutMapping("/{id}")
     public Map<String, Object> updateSpot(@PathVariable Long id, @Valid @RequestBody Spot spotDetails) {
         double[] coords = geocodingService.getCoordinates(spotDetails.getLocation());
@@ -127,12 +136,14 @@ public class SpotController {
         return mapToFrontend(saved);
     }
 
+    // Löscht einen Spot komplett aus der Datenbank
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSpot(@PathVariable Long id) {
         spotService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
+    // Löscht eine einzelne Bewertung und berechnet den Durchschnitt neu
     @DeleteMapping("/reviews/{reviewId}")
     public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) {
         try {
@@ -143,6 +154,7 @@ public class SpotController {
         }
     }
 
+    // Hilfsmethode, um die Daten so aufzubereiten, wie das Vue-Frontend sie braucht
     private Map<String, Object> mapToFrontend(Spot s) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", s.getId());
@@ -158,6 +170,7 @@ public class SpotController {
 
         map.put("ownerId", s.getOwnerId());
 
+        // Auch die Bewertungen des Spots werden hier mit eingepackt
         List<Map<String, Object>> reviewMaps = s.getReviews().stream()
                 .map(r -> {
                     Map<String, Object> reviewMap = new HashMap<>();
@@ -173,6 +186,7 @@ public class SpotController {
         category.put("name", s.getCategory());
         map.put("category", category);
 
+        // Sucht den Namen des Erstellers raus, damit wir "Anonymer Local" oder den echten Namen anzeigen können
         String creatorName = "Unbekannter User";
         if (s.getOwnerId() != null) {
             creatorName = userRepository.findByOauthId(s.getOwnerId())

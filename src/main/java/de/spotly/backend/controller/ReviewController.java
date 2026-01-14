@@ -16,6 +16,7 @@ import de.spotly.backend.entity.Spot;
 import de.spotly.backend.repository.ReviewRepository;
 import de.spotly.backend.repository.SpotRepository;
 
+// Dieser Controller regelt alles rund um die Nutzerbewertungen
 @RestController
 @RequestMapping("/api/reviews")
 public class ReviewController {
@@ -28,11 +29,14 @@ public class ReviewController {
         this.spotRepository = spotRepository;
     }
 
+    // Erstellt eine neue Bewertung für einen bestimmten Spot
     @PostMapping
     public Review createReview(@RequestBody ReviewDTO dto) {
+        // Zuerst prüfen, ob der Spot überhaupt existiert
         Spot spot = spotRepository.findById(dto.getSpotId())
                 .orElseThrow(() -> new RuntimeException("Spot not found"));
 
+        // Daten aus dem DTO in das echte Review-Objekt übertragen
         Review review = new Review();
         review.setRating(dto.getRating());
         review.setComment(dto.getComment());
@@ -41,11 +45,13 @@ public class ReviewController {
         return reviewRepository.save(review);
     }
 
+    // Zeigt alle Bewertungen an, die zu einem bestimmten Spot gehören
     @GetMapping("/spot/{spotId}")
     public List<Review> getReviewsBySpot(@PathVariable Long spotId) {
         return reviewRepository.findBySpotId(spotId);
     }
 
+    // Löscht eine Bewertung anhand ihrer ID
     @DeleteMapping("/{id}")
     public void deleteReview(@PathVariable Long id) {
         reviewRepository.deleteById(id);

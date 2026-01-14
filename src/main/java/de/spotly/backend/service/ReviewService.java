@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+// Dieser Service verwaltet die Bewertungen und aktualisiert die Spot-Statistiken
 @Service
 public class ReviewService {
 
@@ -22,6 +23,7 @@ public class ReviewService {
         this.adminLogService = adminLogService;
     }
 
+    // Speichert ein neues Review und berechnet sofort den neuen Sterne-Durchschnitt für den Spot
     @Transactional
     public Review addReviewAndUpdateSpot(Long spotId, Review newReview) {
         Spot spot = spotRepository.findById(spotId)
@@ -30,6 +32,7 @@ public class ReviewService {
         newReview.setSpot(spot);
         Review savedReview = reviewRepository.save(newReview);
 
+        // Hier wird der neue Durchschnitt mathematisch ermittelt
         double currentTotal = (spot.getAverageRating() != null ? spot.getAverageRating() : 0.0)
                 * (spot.getReviewCount() != null ? spot.getReviewCount() : 0);
 
@@ -38,13 +41,15 @@ public class ReviewService {
 
         spot.setReviewCount(newCount);
         spot.setAverageRating(newAverage);
-        spotRepository.save(spot);
+        spotRepository.save(spot); // Update des Spots mit neuen Werten
 
+        // Protokollierung im Admin-Log
         adminLogService.log("SYSTEM", "REVIEW_ADDED", "Neue Bewertung für Spot '" + spot.getTitle() + "'");
 
         return savedReview;
     }
 
+    // Löscht eine Bewertung und stößt die Neuberechnung der Sterne an
     @Transactional
     public void deleteReviewAndUpdateSpot(Long reviewId) {
         Review review = reviewRepository.findById(reviewId)
@@ -53,10 +58,12 @@ public class ReviewService {
         Spot spot = review.getSpot();
         reviewRepository.delete(review);
 
+        // Statistiken nach dem Löschen korrigieren
         recalculateSpotStatistics(spot);
         adminLogService.log("SYSTEM", "REVIEW_DELETED", "Bewertung ID " + reviewId + " wurde gelöscht.");
     }
 
+    // Hilfsmethode, die alle verbliebenen Reviews zählt und den Durchschnitt neu berechnet
     private void recalculateSpotStatistics(Spot spot) {
         List<Review> reviews = reviewRepository.findBySpotId(spot.getId());
 

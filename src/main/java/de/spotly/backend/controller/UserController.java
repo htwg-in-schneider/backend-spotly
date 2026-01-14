@@ -21,22 +21,22 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // Holt eine Liste aller registrierten User (für die Admin-Ansicht)
     @GetMapping
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-    // Endpunkt für das eigene Profil - nutzt findByOauthId
+    // Erlaubt es einem Nutzer, seinen eigenen Profilnamen zu ändern
     @PutMapping("/me")
     public ResponseEntity<?> updateMyProfile(@RequestBody User userUpdate, Principal principal) {
         if (principal == null) return ResponseEntity.status(401).build();
 
-        // principal.getName() liefert bei Auth0 standardmäßig die OauthId (den "sub" claim)
+        // Identifiziert den User anhand seiner eindeutigen ID aus dem Login-Token
         String oauthId = principal.getName();
 
         return userRepository.findByOauthId(oauthId)
                 .map(user -> {
-                    // Wir aktualisieren nur den Benutzernamen
                     if (userUpdate.getUsername() != null && !userUpdate.getUsername().isBlank()) {
                         user.setUsername(userUpdate.getUsername());
                         userRepository.save(user);
@@ -48,7 +48,7 @@ public class UserController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // WICHTIG: Diese Route muss UNTER /me stehen, damit "me" nicht als ID interpretiert wird
+    // Admin-Funktion: Sperrt oder entsperrt einen Benutzer
     @PutMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User userDetails, Principal principal) {
         String adminName = (principal != null) ? principal.getName() : "Admin";
@@ -56,6 +56,7 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    // Admin-Funktion: Löscht einen Benutzer komplett aus dem System
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id, Principal principal) {
         String adminName = (principal != null) ? principal.getName() : "Admin";

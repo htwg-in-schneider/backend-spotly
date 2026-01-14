@@ -7,14 +7,16 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+// Dieser Controller kümmert sich um die Abfrage der System-Protokolle (Logs)
 @RestController
 @RequestMapping("/api/admin/logs")
-@CrossOrigin(origins = "*") // Erlaube Zugriff vom Frontend
+@CrossOrigin(origins = "*") // Erlaubt dem Frontend den Zugriff auf die Admin-Daten
 public class AdminLogController {
 
     @Autowired
     private AdminLogService logService;
 
+    // Holt einfach die ganze Liste der Logs aus der Datenbank ab
     @GetMapping
     public List<AdminLog> getLogs() {
         return logService.getAllLogs();
