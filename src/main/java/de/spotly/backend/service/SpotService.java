@@ -12,11 +12,11 @@ import de.spotly.backend.repository.SpotRepository;
 public class SpotService {
 
     private final SpotRepository spotRepository;
-    private final AdminLogService adminLogService; // HINZUGEFÜGT
+    private final AdminLogService adminLogService;
 
     public SpotService(SpotRepository spotRepository, AdminLogService adminLogService) { // BEARBEITET
         this.spotRepository = spotRepository;
-        this.adminLogService = adminLogService; // HINZUGEFÜGT
+        this.adminLogService = adminLogService;
     }
 
     public List<Spot> findSpotsByCriteria(String title, String category) {

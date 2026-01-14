@@ -14,12 +14,12 @@ public class CategoryController {
     @GetMapping
     public List<Map<String, String>> getCategories() {
         return List.of(
-            Map.of("name", "Natur & Aussicht"),
-            Map.of("name", "Shops & Märkte"),
-            Map.of("name", "Events & Kultur"),
-            Map.of("name", "Cafés & Essen"),
-            Map.of("name", "Sport & Freizeit"),
-            Map.of("name", "Andere")
+                Map.of("name", "Natur & Aussicht"),
+                Map.of("name", "Shops & Märkte"),
+                Map.of("name", "Events & Kultur"),
+                Map.of("name", "Cafés & Essen"),
+                Map.of("name", "Sport & Freizeit"),
+                Map.of("name", "Andere")
 
         );
     }

@@ -23,7 +23,8 @@ public class Review {
     @JsonBackReference
     private Spot spot;
 
-    public Review() {}
+    public Review() {
+    }
 
     public Review(int rating, String comment, Spot spot) {
         this.rating = rating;
@@ -31,11 +32,31 @@ public class Review {
         this.spot = spot;
     }
 
-    public Long getId() { return id; }
-    public int getRating() { return rating; }
-    public void setRating(int rating) { this.rating = rating; }
-    public String getComment() { return comment; }
-    public void setComment(String comment) { this.comment = comment; }
-    public Spot getSpot() { return spot; }
-    public void setSpot(Spot spot) { this.spot = spot; }
+    public Long getId() {
+        return id;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public Spot getSpot() {
+        return spot;
+    }
+
+    public void setSpot(Spot spot) {
+        this.spot = spot;
+    }
 }

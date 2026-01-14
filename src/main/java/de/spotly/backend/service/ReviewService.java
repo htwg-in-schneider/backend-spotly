@@ -34,7 +34,6 @@ public class ReviewService {
                 * (spot.getReviewCount() != null ? spot.getReviewCount() : 0);
 
         int newCount = (spot.getReviewCount() != null ? spot.getReviewCount() : 0) + 1;
-        // WIEDER AUF getRating() GEÄNDERT:
         double newAverage = (currentTotal + newReview.getRating()) / newCount;
 
         spot.setReviewCount(newCount);
@@ -63,7 +62,6 @@ public class ReviewService {
 
         int count = reviews.size();
         double average = reviews.stream()
-                // WIEDER AUF getRating() GEÄNDERT:
                 .mapToDouble(Review::getRating)
                 .average()
                 .orElse(0.0);

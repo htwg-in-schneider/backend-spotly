@@ -30,7 +30,6 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody User userDetails, Principal principal) {
         String adminName = (principal != null) ? principal.getName() : "Admin";
 
-        // Geändert von getEnabled() auf isEnabled()
         userService.updateUserStatus(id, userDetails.isEnabled(), adminName);
 
         return ResponseEntity.ok().build();

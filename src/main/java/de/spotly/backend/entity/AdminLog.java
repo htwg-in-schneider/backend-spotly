@@ -12,11 +12,10 @@ public class AdminLog {
     private Long id;
 
     private LocalDateTime timestamp;
-    private String adminName; // Der Name des Admins (aus dem Token)
-    private String action;    // z.B. "USER_LOCKED", "SPOT_DELETED"
-    private String details;   // Zusatzinfos
+    private String adminName;
+    private String action;
+    private String details;
 
-    // Wichtig: Default-Konstruktor für JPA
     public AdminLog() {}
 
     public AdminLog(String adminName, String action, String details) {
@@ -26,7 +25,6 @@ public class AdminLog {
         this.details = details;
     }
 
-    // Getter & Setter
     public Long getId() { return id; }
     public LocalDateTime getTimestamp() { return timestamp; }
     public String getAdminName() { return adminName; }

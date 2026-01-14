@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-// NEUE IMPORTS FÜR AUTH0
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 
@@ -37,7 +36,6 @@ public class SpotController {
         this.spotService = spotService;
     }
 
-    // 1. ÖFFENTLICH: Alle Spots laden (keine Änderung nötig)
     @GetMapping
     public List<Map<String, Object>> getAllSpots(
             @RequestParam(required = false) String title,
@@ -49,13 +47,11 @@ public class SpotController {
                 .collect(Collectors.toList());
     }
 
-    // 2. PRIVAT: Nur "Meine Spots" (Nutzt das Token)
     @GetMapping("/me")
     public List<Map<String, Object>> getMySpots(@AuthenticationPrincipal Jwt jwt) {
         if (jwt == null) {
             throw new RuntimeException("Nicht autorisiert: Kein Token gefunden.");
         }
-        // Holt die Auth0 User-ID (sub) aus dem Token
         String userId = jwt.getSubject();
 
         List<Spot> spots = spotService.findByOwnerId(userId);
@@ -64,7 +60,6 @@ public class SpotController {
                 .collect(Collectors.toList());
     }
 
-    // 3. ÖFFENTLICH: Einzelnen Spot laden (keine Änderung nötig)
     @GetMapping("/{id}")
     public Map<String, Object> getSpotById(@PathVariable Long id) {
         Spot spot = spotService.findById(id)
@@ -72,13 +67,11 @@ public class SpotController {
         return mapToFrontend(spot);
     }
 
-    // 4. PRIVAT: Spot erstellen (Speichert jetzt die ownerId automatisch)
     @PostMapping
     public ResponseEntity<?> createSpot(
             @Valid @RequestBody Spot spot,
             @AuthenticationPrincipal Jwt jwt) { // JWT hinzugefügt
 
-        // Automatik: Setzt die ownerId aus dem Auth0 Token
         if (jwt != null) {
             spot.setOwnerId(jwt.getSubject());
         }
@@ -150,7 +143,6 @@ public class SpotController {
         }
     }
 
-    // HILFSMETHODE: Mappt das Datenbank-Objekt für das Frontend
     private Map<String, Object> mapToFrontend(Spot s) {
         Map<String, Object> map = new HashMap<>();
         map.put("id", s.getId());
@@ -164,8 +156,6 @@ public class SpotController {
         map.put("averageRating", s.getAverageRating() != null ? s.getAverageRating() : 0.0);
         map.put("reviewCount", s.getReviewCount() != null ? s.getReviewCount() : 0);
 
-
-        // WICHTIG: Damit das Frontend weiß, wem der Spot gehört
         map.put("ownerId", s.getOwnerId());
 
         List<Map<String, Object>> reviewMaps = s.getReviews().stream()
@@ -185,7 +175,6 @@ public class SpotController {
 
         String creatorName = "Unbekannter User";
         if (s.getOwnerId() != null) {
-            // Wir suchen in der User-Tabelle nach der oauthId, die im Spot als ownerId gespeichert ist
             creatorName = userRepository.findByOauthId(s.getOwnerId())
                     .map(User::getUsername)
                     .orElse("Anonymer Local");

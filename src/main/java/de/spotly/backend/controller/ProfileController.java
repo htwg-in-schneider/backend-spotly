@@ -23,10 +23,8 @@ public class ProfileController {
     public ResponseEntity<User> getMyProfile(@AuthenticationPrincipal Jwt jwt) {
         String oauthId = jwt.getSubject(); // Holt die 'sub' ID aus dem Token
 
-        // Suche den User in der DB. Wenn nicht da, lege ihn evtl. neu an (Self-Registration)
         User user = userRepository.findByOauthId(oauthId)
                 .orElseGet(() -> {
-                    // Optional: User automatisch erstellen, wenn er das erste Mal kommt
                     User newUser = new User();
                     newUser.setOauthId(oauthId);
                     newUser.setRole("USER"); // Standardrolle

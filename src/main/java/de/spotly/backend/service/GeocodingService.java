@@ -13,7 +13,6 @@ public class GeocodingService {
     public double[] getCoordinates(String location) {
         try {
             RestTemplate restTemplate = new RestTemplate();
-            // Wir fragen die OpenStreetMap API ab
             String url = NOMINATIM_URL + location.replace(" ", "+");
             String response = restTemplate.getForObject(url, String.class);
 
@@ -28,6 +27,6 @@ public class GeocodingService {
         } catch (Exception e) {
             System.err.println("Geocoding fehlgeschlagen: " + e.getMessage());
         }
-        return null; // Falls nichts gefunden wurde
+        return null;
     }
 }
