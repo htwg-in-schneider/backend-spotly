@@ -4,9 +4,10 @@ import de.spotly.backend.entity.Review;
 import de.spotly.backend.entity.Spot;
 import de.spotly.backend.repository.ReviewRepository;
 import de.spotly.backend.repository.SpotRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ReviewService {
@@ -19,30 +20,49 @@ public class ReviewService {
         this.spotRepository = spotRepository;
     }
 
-
     @Transactional
     public Review addReviewAndUpdateSpot(Long spotId, Review newReview) {
-        // 1. Spot laden
         Spot spot = spotRepository.findById(spotId)
                 .orElseThrow(() -> new RuntimeException("Spot nicht gefunden"));
 
-        // 2. Review mit Spot verknüpfen und speichern
         newReview.setSpot(spot);
         Review savedReview = reviewRepository.save(newReview);
 
-        // 3. Komplexe Logik: Durchschnitt neu berechnen
-        // Formel: ((Alter Schnitt * Alte Anzahl) + Neues Rating) / (Neue Anzahl)
         double currentTotal = (spot.getAverageRating() != null ? spot.getAverageRating() : 0.0)
                 * (spot.getReviewCount() != null ? spot.getReviewCount() : 0);
 
         int newCount = (spot.getReviewCount() != null ? spot.getReviewCount() : 0) + 1;
         double newAverage = (currentTotal + newReview.getRating()) / newCount;
 
-        // 4. Spot mit neuen Werten aktualisieren
         spot.setReviewCount(newCount);
         spot.setAverageRating(newAverage);
         spotRepository.save(spot);
 
         return savedReview;
+    }
+
+    @Transactional
+    public void deleteReviewAndUpdateSpot(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId)
+                .orElseThrow(() -> new RuntimeException("Review nicht gefunden"));
+
+        Spot spot = review.getSpot();
+        reviewRepository.delete(review);
+
+        recalculateSpotStatistics(spot);
+    }
+
+    private void recalculateSpotStatistics(Spot spot) {
+        List<Review> reviews = reviewRepository.findBySpotId(spot.getId());
+
+        int count = reviews.size();
+        double average = reviews.stream()
+                .mapToDouble(Review::getRating)
+                .average()
+                .orElse(0.0);
+
+        spot.setReviewCount(count);
+        spot.setAverageRating(average);
+        spotRepository.save(spot);
     }
 }

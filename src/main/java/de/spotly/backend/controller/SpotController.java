@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import de.spotly.backend.entity.Review;
 import de.spotly.backend.entity.User;
 import de.spotly.backend.repository.UserRepository;
-import de.spotly.backend.service.ReviewService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -139,6 +138,16 @@ public class SpotController {
     public ResponseEntity<Void> deleteSpot(@PathVariable Long id) {
         spotService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/reviews/{reviewId}")
+    public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) {
+        try {
+            reviewService.deleteReviewAndUpdateSpot(reviewId);
+            return ResponseEntity.ok("Review gelöscht und Spot-Statistik aktualisiert.");
+        } catch (Exception e) {
+            return ResponseEntity.status(404).body("Fehler beim Löschen: " + e.getMessage());
+        }
     }
 
     // HILFSMETHODE: Mappt das Datenbank-Objekt für das Frontend
