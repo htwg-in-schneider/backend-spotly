@@ -1,41 +1,40 @@
 package de.spotly.backend.entity;
 
 import jakarta.persistence.*;
+import java.time.Instant; // Wichtig: Wir nutzen jetzt Instant
 
-import java.time.LocalDateTime;
-
-// Diese Klasse sorgt dafür, dass die Logs in der Datenbanktabelle "admin_logs" landen
 @Entity
 @Table(name = "admin_logs")
 public class AdminLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // Eindeutige Nummer für jeden Log-Eintrag
+    private Long id;
 
-    private LocalDateTime timestamp; // Wann die Aktion passiert ist
-    private String adminName;        // Welcher Admin (oder das System) es war
-    private String action;           // Was gemacht wurde (z.B. USER_LOCKED)
-    private String details;          // Genauere Infos zur Aktion
+    // Instant sorgt für einen eindeutigen Zeitpunkt auf der Weltachse (UTC)
+    private Instant timestamp;
 
-    // Standard-Konstruktor (wird von JPA benötigt)
+    private String adminName;
+    private String action;
+    private String details;
+
     public AdminLog() {
     }
 
-    // Konstruktor, um schnell einen neuen Log-Eintrag mit der aktuellen Zeit zu erstellen
+    // Im Konstruktor nutzen wir Instant.now()
     public AdminLog(String adminName, String action, String details) {
-        this.timestamp = LocalDateTime.now();
+        this.timestamp = Instant.now(); // Erzeugt den Zeitstempel in UTC
         this.adminName = adminName;
         this.action = action;
         this.details = details;
     }
 
-    // Die Getter-Methoden, um die Daten später wieder auszulesen
     public Long getId() {
         return id;
     }
 
-    public LocalDateTime getTimestamp() {
+    // Der Getter gibt nun ein Instant zurück
+    public Instant getTimestamp() {
         return timestamp;
     }
 
