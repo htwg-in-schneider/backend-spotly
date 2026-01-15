@@ -109,20 +109,6 @@ public class SpotController {
         return ResponseEntity.status(201).body(mapToFrontend(saved));
     }
 
-    @Autowired
-    private de.spotly.backend.service.ReviewService reviewService;
-
-    // Fügt einem Spot eine neue Bewertung hinzu und aktualisiert die Sterne
-    @PostMapping("/{id}/reviews")
-    public ResponseEntity<?> addReview(@PathVariable Long id, @RequestBody Review review) {
-        try {
-            Review saved = reviewService.addReviewAndUpdateSpot(id, review);
-            return ResponseEntity.status(201).body(saved);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
     // Aktualisiert die Daten eines Spots (z.B. neue Beschreibung oder Ort)
     @PutMapping("/{id}")
     public Map<String, Object> updateSpot(@PathVariable Long id, @Valid @RequestBody Spot spotDetails) {
@@ -141,17 +127,6 @@ public class SpotController {
     public ResponseEntity<Void> deleteSpot(@PathVariable Long id) {
         spotService.delete(id);
         return ResponseEntity.noContent().build();
-    }
-
-    // Löscht eine einzelne Bewertung und berechnet den Durchschnitt neu
-    @DeleteMapping("/reviews/{reviewId}")
-    public ResponseEntity<?> deleteReview(@PathVariable Long reviewId) {
-        try {
-            reviewService.deleteReviewAndUpdateSpot(reviewId);
-            return ResponseEntity.ok("Review gelöscht und Spot-Statistik aktualisiert.");
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body("Fehler beim Löschen: " + e.getMessage());
-        }
     }
 
     // Hilfsmethode, um die Daten so aufzubereiten, wie das Vue-Frontend sie braucht
